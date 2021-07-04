@@ -1,3 +1,5 @@
+// Environment variables imported from .env
+
 require('dotenv').config()
 
 const PORT = process.env.PORT

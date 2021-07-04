@@ -1,4 +1,4 @@
-###
+### GET
 http://localhost:3003/api/blogs
 
 
@@ -7,8 +7,21 @@ POST http://localhost:3003/api/blogs HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "tested",
-  "author": "please",
-  "url": "work",
-  "likes": 22
+  "title": "gilfa",
+  "author": "lole",
+  "url": "muk",
+  "likes": 11
 }
+###
+PUT  http://localhost:3003/api/blogs/60e15291fb2f4b188548d80a HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "okaynow",
+  "author": "work",
+  "url": "borasdfpa",
+  "likes": 30
+}
+
+###
+DELETE http://localhost:3003/api/blogs/60e0dc555336d40cc03682cf HTTP/1.1

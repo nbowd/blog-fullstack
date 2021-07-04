@@ -1,3 +1,8 @@
+// Custom middleware for the blog application. 
+// Logging function for request/error information
+// Handling for unknown or erroneous endpoints
+// Exports to app.js to be incorporated
+
 const logger = require('./logger')
 
 const requestLogger = (request, response, next) => {

@@ -1,3 +1,4 @@
+// Blog schema setup for MongoDB. Transforms the created schema and exports it for us in blogs.js
 const mongoose = require('mongoose')
 
 const blogSchema = new mongoose.Schema({
