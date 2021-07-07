@@ -1,27 +1,30 @@
 ### GET
 http://localhost:3003/api/blogs
 
+### GET single
+http://localhost:3003/api/blogs/60e14bb0d2a20e16f81e0ab6
 
 ###
 POST http://localhost:3003/api/blogs HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "test",
-  "author": "environment",
-  "url": "lole",
-  "likes": 11
+  "title": "Go To Statemasdfasdfasdent Consideredasdfasdf Harmful",
+  "author": "Edsger W. Dijkstra",
+  "url": "http://www.u.arizona.edu/asdfasdf~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+  "likes":123
 }
+
 ###
-PUT  http://localhost:3003/api/blogs/60e154f4cb088b1902ea83e6 HTTP/1.1
+PUT  http://localhost:3003/api/blogs/60e4f22c2c390c09d6c99ac8 HTTP/1.1
 Content-Type: application/json
 
 {
-  "title": "okaynow",
-  "author": "work",
-  "url": "borasdfpa",
-  "likes": 30
+  "title": "Go To Statement Considered Harmful",
+  "author": "Edsger W. Dijkstra",
+  "url": "http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html",
+  "likes": 5
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/60e154f4cb088b1902ea83e6 HTTP/1.1
+DELETE http://localhost:3003/api/blogs/60e5145c9c01b50c8165185e HTTP/1.1

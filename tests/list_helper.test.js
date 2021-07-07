@@ -6,43 +6,43 @@ test('dummy returns one', () => {
   const result = listHelper.dummy(blogs)
   expect(result).toBe(1)
 })
-// Blog with a single entry
-describe('single likes', () => {
-  const listWithOneBlog = [
-    {
-      _id: '5a422aa71b54a676234d17f8',
-      title: 'Go To Statement Considered Harmful',
-      author: 'Edsger W. Dijkstra',
-      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
-      likes: 5,
-      __v: 0
-    }
-  ]
+// // Blog with a single entry
+// describe('single likes', () => {
+//   const listWithOneBlog = [
+//     {
+//       _id: '5a422aa71b54a676234d17f8',
+//       title: 'Go To Statement Considered Harmful',
+//       author: 'Edsger W. Dijkstra',
+//       url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+//       likes: 5,
+//       __v: 0
+//     }
+//   ]
 
-  test('when list has only one blog, equals the likes of that', () => {
-    const result = listHelper.totalLikes(listWithOneBlog)
-    expect(result).toBe(5)
-  })
-})
+//   test('when list has only one blog, equals the likes of that', () => {
+//     const result = listHelper.totalLikes(listWithOneBlog)
+//     expect(result).toBe(5)
+//   })
+// })
 
-// Blog multiple entries
-describe('total likes', () => {
-  test('sums the likes of all the blogs', () => {
-    const result = listHelper.totalLikes(blogs)
-    expect(result).toBe(36)
-  })
-})
+// // Blog multiple entries
+// describe('total likes', () => {
+//   test('sums the likes of all the blogs', () => {
+//     const result = listHelper.totalLikes(blogs)
+//     expect(result).toBe(36)
+//   })
+// })
 
-describe('favorite blog', () => {
-  test('Compares the blogs and returns the one with the most likes', () => {
-    const result = listHelper.favoriteBlog(blogs)
-    expect(result).toStrictEqual({
-      title: "Canonical string reduction",
-      author: "Edsger W. Dijkstra",
-      likes: 12
-    })
-  })
-})
+// describe('favorite blog', () => {
+//   test('Compares the blogs and returns the one with the most likes', () => {
+//     const result = listHelper.favoriteBlog(blogs)
+//     expect(result).toStrictEqual({
+//       title: "Canonical string reduction",
+//       author: "Edsger W. Dijkstra",
+//       likes: 12
+//     })
+//   })
+// })
 
 const blogs = [
   {
