@@ -1,31 +1,34 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const helper = require('./test_helper')
+const bcrypt = require('bcrypt')
 const app = require('../app')
 const api = supertest(app)
+
+const User = require('../models/user')
 const Blog = require('../models/blog')
 
 const baseUrl = '/api/blogs'
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-  // Creates new array of mongoose objects using the Blog constructor
-  const blogObjects = helper.initialBlogs.map(blog => new Blog(blog))
-  
-  // New array of promises by calling .save() on each
-  const promiseArray = blogObjects.map(blog => blog.save())
+  await Blog.insertMany(helper.initialBlogs)
+  await User.deleteMany({})
 
-  // Transforms an array of promises into a SINGLE promise when ALL have completed
-  await Promise.all(promiseArray)
+  const passwordHash = await bcrypt.hash('sekret', 10)
+  const user = new User({ username: 'root', passwordHash })
+
+  await user.save()
 })
 
-describe('when there are some blogs saved initially', () => {
-  test('blogs are returned as json', async () => {
+describe('when database has initial blogs', () => {
+  test('blogs are returned as json type', async () => {
     await api
       .get(baseUrl)
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
+
   test('All blogs returned', async () => {
     const response = await api.get(baseUrl)
     expect(response.body).toHaveLength(helper.initialBlogs.length)
@@ -37,20 +40,22 @@ describe('when there are some blogs saved initially', () => {
     expect(titles).toContain('React patterns')
   })
 
-  test('Right id is defined. Not _id', async () => {
+  test('New id has been defined. Not default _id', async () => {
     const response = await api.get(baseUrl)
     expect(response.body[0].id).toBeDefined()
   })
-
 })
 
 describe('adding a post', () => {
-  test('successfully creates new blog post', async () => {
+  test('succeeds with valid data', async () => {
+    const usersAtStart = await helper.usersInDb()
+
     const newBlog = {
       title: 'test title',
       author: 'chucasdf',
       url: 'asdlfasdlfkj',
-      likes: '90'
+      likes: '90',
+      userId: usersAtStart[0].id
     }
 
     await api
@@ -66,12 +71,15 @@ describe('adding a post', () => {
     expect(titles).toContain('test title')
   })
 
-  test('new blog missing likes is defaulted to 0', async () => {
+  test('succeeds missing likes: defaulted to 0', async () => {
+    const usersAtStart = await helper.usersInDb()
+
     const newBlog = {
       title: 'missing',
       author: 'the likes',
-      url: 'property'
+      url: 'property',
       // missing likes
+      userId: usersAtStart[0].id
     }
 
     await api
@@ -85,8 +93,7 @@ describe('adding a post', () => {
     expect(response.body[response.body.length - 1].likes).toBe(0)
   })
 
-  test('blog missing title/url is not added', async () => {
-    // No Title
+  test('fails with status code 400 if invalid data', async () => {
     const newBlog = {
       author: 'missing',
       likes: 12
@@ -103,31 +110,70 @@ describe('adding a post', () => {
   })
 })
 
-// SAMPLE BAD POST URL IS TOO SHORT RETURNS BLOG VALIDATION ERROR
-// test('successfully creates new blog post', async () => {
-//   const newBlog = {
-//     title: 'test title 2',
-//     author: 'chuc',
-//     url: 'bad',
-//     likes: '90'
-//   }
+// User tests
+describe('when there is initially one user in db', () => {
+  // beforeEach(async () => {
+  //   await User.deleteMany({})
 
-//   await api
-//     .post(baseUrl)
-//     .send(newBlog)
-//     .expect(200)
-//     .expect('Content-Type', /application\/json/)
-  
-//   const response = await api.get(baseUrl)
-//   const titles = response.body.map(r => r.title)
-//   expect(titles).toContain('test title')
-// })
+  //   const passwordHash = await bcrypt.hash('sekret', 10)
+  //   const user = new User({ username: 'root', passwordHash })
+
+  //   await user.save()
+  // })
+
+  test('get usernames', async () => {
+
+    await api
+      .get('/api/users')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+  })
+  test('creation succeeds with a fresh username', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newUser = {
+      username: 'mluukkai',
+      name: 'Matti Luukkainen',
+      password: 'salainen',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+    expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
+
+    const usernames = usersAtEnd.map(u => u.username)
+    expect(usernames).toContain(newUser.username)
+  })
+})
+
+test('creation fails with proper status code and message if username already taken', async () => {
+  const usersAtStart = await helper.usersInDb()
+
+  const newUser = {
+    username: 'root',
+    name: 'Superuser',
+    password: 'salainen',
+  }
+
+  const result = await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
+    .expect('Content-Type', /application\/json/)
+
+  expect(result.body.error).toContain('`username` to be unique')
+
+  const usersAtEnd = await helper.usersInDb()
+  expect(usersAtEnd).toHaveLength(usersAtStart.length)
+})
 
 
-// test('blog length', async () => {
-//   const response = await api.get('/api/blogs')
-//   expect(response.body).toHaveLength(2)
-// })
 
 afterAll(() => {
   mongoose.connection.close()
