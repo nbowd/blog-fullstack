@@ -112,17 +112,7 @@ describe('adding a post', () => {
 
 // User tests
 describe('when there is initially one user in db', () => {
-  // beforeEach(async () => {
-  //   await User.deleteMany({})
-
-  //   const passwordHash = await bcrypt.hash('sekret', 10)
-  //   const user = new User({ username: 'root', passwordHash })
-
-  //   await user.save()
-  // })
-
-  test('get usernames', async () => {
-
+  test('get users returns json', async () => {
     await api
       .get('/api/users')
       .expect(200)
@@ -168,6 +158,24 @@ test('creation fails with proper status code and message if username already tak
     .expect('Content-Type', /application\/json/)
 
   expect(result.body.error).toContain('`username` to be unique')
+
+  const usersAtEnd = await helper.usersInDb()
+  expect(usersAtEnd).toHaveLength(usersAtStart.length)
+})
+
+test.only('creation fails with status code 400 if invalid data', async () => {
+  const usersAtStart = await helper.usersInDb()
+
+  const newUser = {
+    username: 'hi',
+    name: 'Sleepy',
+    password: 'ho'
+  }
+
+  await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
 
   const usersAtEnd = await helper.usersInDb()
   expect(usersAtEnd).toHaveLength(usersAtStart.length)

@@ -3,7 +3,9 @@ const usersRouter = require('express').Router()
 const User = require('../models/user')
 
 usersRouter.get('/', async (request, response) => {
-  const users = await User.find({})
+  // Populate works similar to JOIN. IDs referencing the blog object in the blogs field of the user document
+  //  will be replaced with the referenced blog document
+  const users = await User.find({}).populate('blogs', {url: 1, title: 1, author: 1})
   response.json(users)
 })
 
