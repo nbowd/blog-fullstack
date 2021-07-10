@@ -1,5 +1,6 @@
 // Route handling for routes related to blogs
 const blogsRouter = require('express').Router()
+const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
@@ -21,11 +22,17 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
+
 // POST: add new entry
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
 
-  const user = await User.findById(body.userId)
+  // Token authorization, responds with 401 if invalid data
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
 
   if (!body.title || !body.url) {return response.status(400).end()}
   const blog = new Blog({
@@ -46,8 +53,21 @@ blogsRouter.post('/', async (request, response) => {
 
 // DELETE an entry from ID
 blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id)  
-  response.status(204).end()
+  const blog = await Blog.findById(request.params.id)
+
+  // Token authorization, responds with 401 if invalid data
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+
+  if ( blog.user.toString() === user._id.toString() ) {
+    await Blog.findByIdAndRemove(request.params.id)
+    return response.status(204).end()
+  } else {
+    return response.status(401).json({error: 'Invalid ownership, this blog is owned by someone else'})
+  }
 
 })
 
