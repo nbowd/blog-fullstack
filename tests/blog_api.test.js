@@ -19,6 +19,7 @@ beforeEach(async () => {
   const user = new User({ username: 'root', passwordHash })
 
   await user.save()
+ 
 })
 
 describe('when database has initial blogs', () => {
@@ -48,6 +49,8 @@ describe('when database has initial blogs', () => {
 
 describe('adding a post', () => {
   test('succeeds with valid data', async () => {
+    const userLogin = await api.post('/api/login').send({ username: 'root', password:'sekret'})
+
     const usersAtStart = await helper.usersInDb()
 
     const newBlog = {
@@ -61,6 +64,7 @@ describe('adding a post', () => {
     await api
       .post(baseUrl)
       .send(newBlog)
+      .set('Authorization', `bearer ${userLogin.body.token}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
     
@@ -72,6 +76,8 @@ describe('adding a post', () => {
   })
 
   test('succeeds missing likes: defaulted to 0', async () => {
+    const userLogin = await api.post('/api/login').send({ username: 'root', password:'sekret'})
+
     const usersAtStart = await helper.usersInDb()
 
     const newBlog = {
@@ -85,6 +91,7 @@ describe('adding a post', () => {
     await api
       .post(baseUrl)
       .send(newBlog)
+      .set('Authorization', `bearer ${userLogin.body.token}`)
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
@@ -93,7 +100,30 @@ describe('adding a post', () => {
     expect(response.body[response.body.length - 1].likes).toBe(0)
   })
 
-  test('fails with status code 400 if invalid data', async () => {
+  test('fails if token is not provided', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    const newBlog = {
+      title: 'test title',
+      author: 'chucasdf',
+      url: 'asdlfasdlfkj',
+      likes: '90',
+      userId: usersAtStart[0].id
+    }
+
+    await api
+      .post(baseUrl)
+      .send(newBlog)
+      .expect(401)
+    
+
+    const currentBlogs = await helper.blogsInDb()
+    expect(currentBlogs).toHaveLength(helper.initialBlogs.length)
+  })
+
+  test('fails with status code 400 if invalid/missing data', async () => {
+    const userLogin = await api.post('/api/login').send({ username: 'root', password:'sekret'})
+
     const newBlog = {
       author: 'missing',
       likes: 12
@@ -102,6 +132,7 @@ describe('adding a post', () => {
     await api
       .post(baseUrl)
       .send(newBlog)
+      .set('Authorization', `bearer ${userLogin.body.token}`)
       .expect(400)
 
     const currentBlogs = await helper.blogsInDb()
@@ -163,7 +194,7 @@ test('creation fails with proper status code and message if username already tak
   expect(usersAtEnd).toHaveLength(usersAtStart.length)
 })
 
-test.only('creation fails with status code 400 if invalid data', async () => {
+test('creation fails with status code 400 if invalid data', async () => {
   const usersAtStart = await helper.usersInDb()
 
   const newUser = {
