@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import blogs from '../services/blogs'
+import blogService from '../services/blogs'
 
-const Blog = ({blog}) => {
+const Blog = ({blog, handleLike}) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,6 +16,7 @@ const Blog = ({blog}) => {
   const hideDetails = { display: allDetails ? 'none' : '' }
   const showDetails = { display: allDetails ? '' : 'none' }
 
+
   return <div style={blogStyle}>
     <div style={hideDetails}>
       {blog.title} {blog.author} <button onClick={() => setAllDetails(true)}>Details</button>
@@ -22,7 +25,7 @@ const Blog = ({blog}) => {
     <div style={showDetails}>
       <div>{blog.title} <button onClick={() => setAllDetails(false)}>Hide</button> </div> 
       <div>{blog.url}</div>
-      <div>{blog.likes} <button>Like</button> </div> 
+      <div>{blog.likes} <button onClick={() => handleLike(blog)}>Like</button> </div> 
       <div>{blog.author}</div>
     </div>
   </div>

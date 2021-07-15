@@ -59,10 +59,21 @@ const App = () => {
     setUser(null)
   }
 
-  const handleBlogAdd = () => {
-    
-  }
+  const handleLike = async (blog) => {
+    const updatedInfo = {
+      ...blog,
+      likes: blog.likes + 1
+    }
 
+    await blogService.updateBlog(updatedInfo)
+    const updatedBlogs = await blogService.getAll()
+    
+    // Sorts blogs by likes in descending order
+    setBlogs(updatedBlogs.sort(function(a, b) {
+      return b.likes - a.likes
+    }))
+
+  }
 
   const hideWhenVisible = { display: createVisible ? 'none' : '' }
   const showWhenVisible = { display: createVisible ? '' : 'none' }
@@ -112,7 +123,7 @@ return (
       </div>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
       )}
     </>
   )}
