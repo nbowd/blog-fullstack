@@ -39,12 +39,14 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
-
+   
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
       ) 
 
       setUser(user)
+      blogService.setToken(user.token)
+
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -57,23 +59,9 @@ const App = () => {
   const logoutUser = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
+    blogService.setToken(null)
   }
 
-  const handleLike = async (blog) => {
-    const updatedInfo = {
-      ...blog,
-      likes: blog.likes + 1
-    }
-
-    await blogService.updateBlog(updatedInfo)
-    const updatedBlogs = await blogService.getAll()
-    
-    // Sorts blogs by likes in descending order
-    setBlogs(updatedBlogs.sort(function(a, b) {
-      return b.likes - a.likes
-    }))
-
-  }
 
   const hideWhenVisible = { display: createVisible ? 'none' : '' }
   const showWhenVisible = { display: createVisible ? '' : 'none' }
@@ -93,6 +81,7 @@ return (
         password={password} 
         handleUsernameChange={({ target }) => setUsername(target.value)} 
         handlePasswordChange={({ target }) => setPassword(target.value)}
+  
       />
     </>
     ) : (
@@ -102,7 +91,7 @@ return (
       <Notification message={errorMessage} />
 
       <div>
-        {user.name} logged in <button onClick={logoutUser}>Logout</button>
+        {user.name} logged in <button onClick={() => logoutUser()}>Logout</button>
       </div>
 
       {/* Collapsable New Blog Form, hidden by default */}
@@ -123,7 +112,13 @@ return (
       </div>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+        <Blog 
+          key={blog.id} 
+          blog={blog}
+          user={user}
+          blogs={blogs}
+          setBlogs={setBlogs}
+        />
       )}
     </>
   )}

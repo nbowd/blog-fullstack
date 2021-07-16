@@ -33,7 +33,6 @@ const CreateForm = ({
     console.log(title, author, url);
   }
 
-
   return (
     <div>
       <h2>Create new:</h2>
