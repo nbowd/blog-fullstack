@@ -44,6 +44,7 @@ const CreateForm = ({
               value={title}
               name="title"
               onChange={({target}) => setTitle(target.value)}
+              data-cy="title-input"
             />
           </div>
           <div>
@@ -53,6 +54,7 @@ const CreateForm = ({
               value={author}
               name="author"
               onChange={({target}) => setAuthor(target.value)}
+              data-cy="author-input"
             />
           </div>
           <div>
@@ -62,9 +64,11 @@ const CreateForm = ({
               value={url}
               name="url"
               onChange={({target}) => setUrl(target.value)}
+              data-cy="url-input"
+
             />
           </div>
-          <button type="submit">Create</button>
+          <button data-cy="create-button" type="submit">Create</button>
         </form>
       </div>
   )

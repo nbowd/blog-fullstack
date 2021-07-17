@@ -91,13 +91,13 @@ return (
       <Notification message={errorMessage} />
 
       <div>
-        {user.name} logged in <button onClick={() => logoutUser()}>Logout</button>
+        {user.name} logged in <button onClick={() => logoutUser()} data-cy="logout-button">Logout</button>
       </div>
 
       {/* Collapsable New Blog Form, hidden by default */}
       <div>
         <div style={hideWhenVisible}>
-          <button onClick={() => setCreateVisible(true)}>New Blog</button>
+          <button onClick={() => setCreateVisible(true)} data-cy="new-button">New Blog</button>
         </div>
 
         <div style={showWhenVisible}>

@@ -39,18 +39,18 @@ const Blog = ({blog, user, blogs, setBlogs}) => {
       setBlogs(currentBlogs)
     }
   }
-  return <div style={blogStyle}>
+  return <div style={blogStyle} data-cy='blog-body'>
     <div style={hideDetails}>
-      {blog.title} {blog.author} <button onClick={() => setAllDetails(true)}>Details</button>
+      {blog.title} {blog.author} <button onClick={() => setAllDetails(true)} data-cy="details-button">Details</button>
     </div>  
 
     <div style={showDetails}>
-      <div>{blog.title} <button onClick={() => setAllDetails(false)}>Hide</button> </div> 
+      <div>{blog.title} <button onClick={() => setAllDetails(false)} data-cy="hide-button">Hide</button> </div> 
       <div>{blog.url}</div>
-      <div>{blog.likes} <button onClick={() => handleLike(blog)}>Like</button> </div> 
+      <div data-cy="like-div">{blog.likes} <button onClick={() => handleLike(blog)} data-cy="like-button">Like</button> </div> 
       <div>{blog.author}</div>
       <div>{user.username === blog.user[0].username 
-        ? <button onClick={handleDelete}>Delete</button>
+        ? <button onClick={handleDelete} data-cy="delete-button">Delete</button>
         : null}
       </div>
     </div>
