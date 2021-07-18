@@ -1,6 +1,8 @@
 import React, { useState } from "react"
 import blogService from '../services/blogs'
 import Button from "./Button"
+import Wrapper from "./FormWrapper"
+
 
 const CreateForm = ({
   setBlogs,
@@ -35,10 +37,9 @@ const CreateForm = ({
   }
 
   return (
-    <div>
-      <h2>Create new:</h2>
+    <Wrapper>
         <form onSubmit={createBlog}>
-          <div>
+          <Wrapper>
             Title: 
             <input
               type="text"
@@ -47,8 +48,8 @@ const CreateForm = ({
               onChange={({target}) => setTitle(target.value)}
               data-cy="title-input"
             />
-          </div>
-          <div>
+          </Wrapper>
+          <Wrapper>
             Author: 
             <input
               type="text"
@@ -57,8 +58,8 @@ const CreateForm = ({
               onChange={({target}) => setAuthor(target.value)}
               data-cy="author-input"
             />
-          </div>
-          <div>
+          </Wrapper>
+          <Wrapper>
             URL: 
             <input
               type="text"
@@ -68,10 +69,10 @@ const CreateForm = ({
               data-cy="url-input"
 
             />
-          </div>
-          <Button dataCy="create-button" type="submit" text="Create"/>
+          </Wrapper>
+          <Button dataCy="create-button" type="submit" text="Create" primary/>
         </form>
-      </div>
+      </Wrapper>
   )
 }
 

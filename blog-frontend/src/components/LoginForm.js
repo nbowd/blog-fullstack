@@ -1,5 +1,6 @@
 import React from 'react'
 import Button from './Button'
+import Wrapper from './FormWrapper'
 
 function LoginForm({
   username,
@@ -9,7 +10,7 @@ function LoginForm({
   handlePasswordChange
 }) {
   return <form onSubmit={handleLogin}>
-  <div>
+  <Wrapper>
     Username: 
       <input
         data-cy="username"
@@ -18,8 +19,8 @@ function LoginForm({
         name="Username"
         onChange={handleUsernameChange}
       />
-  </div>
-  <div>
+  </Wrapper>
+  <Wrapper>
     Password: 
       <input
         data-cy="password"
@@ -28,8 +29,8 @@ function LoginForm({
         name="Password"
         onChange={handlePasswordChange}
       />
-  </div>
-  <Button dataCy="login-button" type="submit" text="Login"/>
+  </Wrapper>
+  <Button dataCy="login-button" type="submit" text="Login" primary/>
 </form>
 }
 

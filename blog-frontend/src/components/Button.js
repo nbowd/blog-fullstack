@@ -3,20 +3,31 @@ import styled, { css } from 'styled-components'
 
 
 const Button = styled.button`
-  display: block;
   cursor: pointer;
   border-radius: 12px;
   margin: 5px 0;
-  background: ${props => props.theme.colors.main};
+  padding: 5px;
+  background: ${props => props.theme.colors.primary};
   font-size: 20px;
   color: white;
-  ${({secondary, danger})=> {
+  transition: all 0.2s ease 0s;
+  &:hover{
+    background: white;
+    color: ${props => props.theme.colors.primary};
+  } 
+  ${({secondary, danger, details})=> {
     if (secondary) {
       return css`
         background: ${props => props.theme.colors.secondary};
+        font-size: 13px;
       `} else if (danger) {
         return css`
-          background: ${props => props.theme.colors.danger};
+          background: ${props => props.theme.colors.blog};
+        `
+      } else if (details) {
+        return css`
+          background: ${props => props.theme.colors.primary};
+          font-size: 13px;
         `
       }
     }
@@ -31,7 +42,8 @@ function StyledButton({
   text,
   type,
   secondary,
-  danger
+  danger,
+  details
 }) {
   return <Button 
     onClick={onClick} 
@@ -39,6 +51,7 @@ function StyledButton({
     type={type} 
     secondary={secondary} 
     danger={danger}
+    details={details}
     >
       {text}
     </Button>

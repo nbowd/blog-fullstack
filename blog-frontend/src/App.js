@@ -8,15 +8,25 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import styled from 'styled-components'
 
-const Titles = styled.h1`
-  color: #E85A4F;
+const Titles = styled.div`
+  color: ${props => props.theme.colors.primary};
+  align-items:center;
+  justify-content: center;
 `
 
 const Header = styled.div`
   display:flex;
   justify-content:space-between;
+  margin: 0 auto;
+  align-items: center;
+`
+
+const Logout = styled.div`
+  justify-content:center;
+  font-size:22px;
+  font-weight: bold;
+  text-align:center;
   align-items:center;
-  margin-bottom:2rem;
 `
 
 const App = () => {
@@ -84,10 +94,10 @@ return (
     {/*Login required before Blogs are visible */}
     {!user ? (
     <>
-      <Titles>Log in to the application</Titles>
-      
+      <Titles><h1>Log in to the application</h1></Titles>
+      <br/>
       <Notification message={errorMessage}/>
-
+      <br/>
       <LoginForm 
         handleLogin={handleLogin} 
         username={username} 
@@ -99,9 +109,9 @@ return (
     ) : (
     <>
       <Header>
-        <Titles>Blogs</Titles>
+        <Titles><h1>Blogs</h1></Titles>
         
-        <div>{user.name} <Button onClick={() => logoutUser()} dataCy="logout-button" text="Logout" type="button" secondary/></div>
+        <Logout>Welcome, {user.name} <Button onClick={() => logoutUser()} dataCy="logout-button" text="Logout" type="button" secondary/></Logout>
       </Header>
 
       <Notification message={errorMessage} />
@@ -111,16 +121,18 @@ return (
       {/* Collapsable New Blog Form, hidden by default */}
       <div>
         <div style={hideWhenVisible}>
-          <Button onClick={() => setCreateVisible(true)} dataCy="new-button" text="New Blog" type="button" danger/>
+          <Button onClick={() => setCreateVisible(true)} dataCy="new-button" text="New Blog" type="button" primary/>
         </div>
 
         <div style={showWhenVisible}>
+          <Titles><h2>Create new:</h2></Titles>
+
           <CreateForm 
             setBlogs={setBlogs}
             setCreateVisible={setCreateVisible}
             setErrorMessage={setErrorMessage}
           />
-          <Button onClick={() => setCreateVisible(false)} dataCy="cancel-button" text="Cancel" type="button" />
+          <Button onClick={() => setCreateVisible(false)} dataCy="cancel-button" text="Cancel" type="button" secondary/>
         </div>
 
       </div>
