@@ -5,6 +5,18 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import styled from 'styled-components'
+
+const Titles = styled.h1`
+  color: #E85A4F;
+`
+
+const Header = styled.div`
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:2rem;
+`
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -71,9 +83,9 @@ return (
     {/*Login required before Blogs are visible */}
     {!user ? (
     <>
-      <h2>Log in to the application</h2>
-
-      <Notification message={errorMessage} />
+      <Titles>Log in to the application</Titles>
+      
+      <Notification message={errorMessage}/>
 
       <LoginForm 
         handleLogin={handleLogin} 
@@ -81,18 +93,19 @@ return (
         password={password} 
         handleUsernameChange={({ target }) => setUsername(target.value)} 
         handlePasswordChange={({ target }) => setPassword(target.value)}
-  
       />
     </>
     ) : (
     <>
-      <h1>Blogs</h1>
+      <Header>
+        <Titles>Blogs</Titles>
+ 
+        <div>{user.name} <button onClick={() => logoutUser()} data-cy="logout-button">Logout</button></div>
+      </Header>
 
       <Notification message={errorMessage} />
 
-      <div>
-        {user.name} logged in <button onClick={() => logoutUser()} data-cy="logout-button">Logout</button>
-      </div>
+     
 
       {/* Collapsable New Blog Form, hidden by default */}
       <div>

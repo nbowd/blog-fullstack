@@ -71,7 +71,8 @@ describe('Blog app', function() {
         cy.get('[data-cy=details-button]').click()
         cy.get('[data-cy=delete-button]').click()
         cy.on('window:confirm', (str) => {
-          expect(str).to.equal('Remove testing by can be?')
+          // lint doesn't like .to, but I do
+          expect(str).to.equal('Remove testing by can be?') // eslint-disable-line 
         })
         cy.get('[data-cy=details-button]').should('not.exist')
       })
