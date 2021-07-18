@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import CreateForm from './components/CreateForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import Button from './components/Button'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import styled from 'styled-components'
@@ -99,8 +100,8 @@ return (
     <>
       <Header>
         <Titles>Blogs</Titles>
- 
-        <div>{user.name} <button onClick={() => logoutUser()} data-cy="logout-button">Logout</button></div>
+        
+        <div>{user.name} <Button onClick={() => logoutUser()} dataCy="logout-button" text="Logout" type="button"/></div>
       </Header>
 
       <Notification message={errorMessage} />
@@ -110,7 +111,7 @@ return (
       {/* Collapsable New Blog Form, hidden by default */}
       <div>
         <div style={hideWhenVisible}>
-          <button onClick={() => setCreateVisible(true)} data-cy="new-button">New Blog</button>
+          <Button onClick={() => setCreateVisible(true)} dataCy="new-button" text="New Blog" type="button"/>
         </div>
 
         <div style={showWhenVisible}>
@@ -119,7 +120,7 @@ return (
             setCreateVisible={setCreateVisible}
             setErrorMessage={setErrorMessage}
           />
-          <button onClick={() => setCreateVisible(false)}>Cancel</button> 
+          <Button onClick={() => setCreateVisible(false)} dataCy="cancel-button" text="Cancel" type="button"/>
         </div>
 
       </div>

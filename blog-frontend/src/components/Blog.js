@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
+import Button from './Button'
 
 const Blog = ({blog, user, blogs, setBlogs}) => {
   const blogStyle = {
@@ -41,16 +42,16 @@ const Blog = ({blog, user, blogs, setBlogs}) => {
   }
   return <div style={blogStyle} data-cy='blog-body'>
     <div style={hideDetails}>
-      {blog.title} {blog.author} <button onClick={() => setAllDetails(true)} data-cy="details-button">Details</button>
+      {blog.title} {blog.author} <Button onClick={() => setAllDetails(true)} dataCy="details-button" type="button" text="Details"/>
     </div>  
 
     <div style={showDetails}>
-      <div>{blog.title} <button onClick={() => setAllDetails(false)} data-cy="hide-button">Hide</button> </div> 
+      <div>{blog.title} <Button onClick={() => setAllDetails(false)} dataCy="hide-button" type="button" text="Hide"/></div>
       <div>{blog.url}</div>
-      <div data-cy="like-div">{blog.likes} <button onClick={() => handleLike(blog)} data-cy="like-button">Like</button> </div> 
+      <div data-cy="like-div">{blog.likes} <Button onClick={() => handleLike(blog)} dataCy="like-button" type="button" text="Like"/></div> 
       <div>{blog.author}</div>
       <div>{user.username === blog.user[0].username 
-        ? <button onClick={handleDelete} data-cy="delete-button">Delete</button>
+        ? <Button onClick={handleDelete} dataCy="delete-button" type="button" text="Delete"/>
         : null}
       </div>
     </div>

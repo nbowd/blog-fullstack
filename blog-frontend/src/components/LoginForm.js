@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from './Button'
 
 function LoginForm({
   username,
@@ -28,7 +29,7 @@ function LoginForm({
         onChange={handlePasswordChange}
       />
   </div>
-  <button data-cy="login-button" type="submit">login</button>
+  <Button dataCy="login-button" type="submit" text="Login"/>
 </form>
 }
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react"
 import blogService from '../services/blogs'
+import Button from "./Button"
 
 const CreateForm = ({
   setBlogs,
@@ -68,7 +69,7 @@ const CreateForm = ({
 
             />
           </div>
-          <button data-cy="create-button" type="submit">Create</button>
+          <Button dataCy="create-button" type="submit" text="Create"/>
         </form>
       </div>
   )
