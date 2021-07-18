@@ -101,7 +101,7 @@ return (
       <Header>
         <Titles>Blogs</Titles>
         
-        <div>{user.name} <Button onClick={() => logoutUser()} dataCy="logout-button" text="Logout" type="button"/></div>
+        <div>{user.name} <Button onClick={() => logoutUser()} dataCy="logout-button" text="Logout" type="button" secondary/></div>
       </Header>
 
       <Notification message={errorMessage} />
@@ -111,7 +111,7 @@ return (
       {/* Collapsable New Blog Form, hidden by default */}
       <div>
         <div style={hideWhenVisible}>
-          <Button onClick={() => setCreateVisible(true)} dataCy="new-button" text="New Blog" type="button"/>
+          <Button onClick={() => setCreateVisible(true)} dataCy="new-button" text="New Blog" type="button" danger/>
         </div>
 
         <div style={showWhenVisible}>
@@ -120,7 +120,7 @@ return (
             setCreateVisible={setCreateVisible}
             setErrorMessage={setErrorMessage}
           />
-          <Button onClick={() => setCreateVisible(false)} dataCy="cancel-button" text="Cancel" type="button"/>
+          <Button onClick={() => setCreateVisible(false)} dataCy="cancel-button" text="Cancel" type="button" />
         </div>
 
       </div>
