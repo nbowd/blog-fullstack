@@ -58,7 +58,7 @@ const Blog = ({blog, user, blogs, setBlogs}) => {
       <div data-cy="like-div">{blog.likes} <Button onClick={() => handleLike(blog)} dataCy="like-button" type="button" text="Like" secondary/></div> 
       <div>{blog.author}</div>
       <div>{user.username === blog.user[0].username 
-        ? <Button onClick={handleDelete} dataCy="delete-button" type="button" text="Delete"/>
+        ? <Button onClick={handleDelete} dataCy="delete-button" type="button" text="Delete" deleteBtn/>
         : null}
       </div>
     </div>

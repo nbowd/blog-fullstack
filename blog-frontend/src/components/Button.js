@@ -15,7 +15,7 @@ const Button = styled.button`
     background: white;
     color: ${props => props.theme.colors.primary};
   } 
-  ${({secondary, danger, details})=> {
+  ${({secondary, danger, details, deleteBtn})=> {
     if (secondary) {
       return css`
         background: ${props => props.theme.colors.secondary};
@@ -28,6 +28,18 @@ const Button = styled.button`
         return css`
           background: ${props => props.theme.colors.primary};
           font-size: 13px;
+        `
+      } else if (deleteBtn) {
+        return css`
+          background: white;
+          color: ${props => props.theme.colors.delete};
+          border-color: ${props => props.theme.colors.delete};
+          font-size: 10px;
+          font-weight:bold;
+          &:hover {
+            background: ${props => props.theme.colors.delete};
+            color:white;
+          }
         `
       }
     }
@@ -43,7 +55,8 @@ function StyledButton({
   type,
   secondary,
   danger,
-  details
+  details,
+  deleteBtn
 }) {
   return <Button 
     onClick={onClick} 
@@ -52,6 +65,7 @@ function StyledButton({
     secondary={secondary} 
     danger={danger}
     details={details}
+    deleteBtn={deleteBtn}
     >
       {text}
     </Button>

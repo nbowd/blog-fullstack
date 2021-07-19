@@ -113,6 +113,7 @@ return (
         
         <Logout>Welcome, {user.name} <Button onClick={() => logoutUser()} dataCy="logout-button" text="Logout" type="button" secondary/></Logout>
       </Header>
+      <br/>
 
       <Notification message={errorMessage} />
 
